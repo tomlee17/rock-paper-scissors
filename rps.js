@@ -79,10 +79,3 @@ function game() {
 }
 game();
 
-/*   else if (userPlayRaw.charAt(0).toUpperCase() + userPlayRaw.slice(1).toLowerCase() !== 'Rock'
-       && userPlayRaw.charAt(0).toUpperCase() + userPlayRaw.slice(1).toLowerCase() !== 'Paper'
-       && userPlayRaw.charAt(0).toUpperCase() + userPlayRaw.slice(1).toLowerCase() !== 'Scissors') {
-       console.log('Please input only Rock, Paper or Scissors!');
-       return false;
-   }
-*/
