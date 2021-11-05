@@ -9,18 +9,6 @@ function compPlay() {
 }
 //console.log(compPlay());
 
-//Prompt user to input between 'rock' 'paper' or 'scissors'
-function userPlay() {
-    let userPlayRaw = prompt('Input Rock, Paper or Scissors', 'rock');
-    if (userPlayRaw === null || userPlayRaw === '') {
-        console.log('Please input only Rock, Paper or Scissors!');
-    }
-    else {
-        return userPlayRaw.charAt(0).toUpperCase() + userPlayRaw.slice(1).toLowerCase();
-    }
-}
-//console.log(userPlay());
-
 //Declares function taking output from computerPlay and userPlay
 //rock beats scissors
 //scissors beats paper
@@ -29,53 +17,58 @@ function playRound(userPlay, compPlay) {
     if (compPlay === 'Rock' && userPlay === 'Scissors'
         || compPlay === 'Scissors' && userPlay === 'Paper'
         || compPlay === 'Paper' && userPlay === 'Rock') {
-        console.log(`You Lose! ${compPlay} beats ${userPlay}`);
+        results.textContent = `You Lose! ${compPlay} beats ${userPlay}`;
         return 'compWin';
     }
     else if (compPlay === 'Scissors' && userPlay === 'Rock'
         || compPlay === 'Paper' && userPlay === 'Scissors'
         || compPlay === 'Rock' && userPlay === 'Paper') {
-        console.log(`You Win! ${userPlay} beats ${compPlay}`);
+        results.textContent = `You Win! ${userPlay} beats ${compPlay}`;
         return 'userWin';
     }
-    else if (compPlay === userPlay) {
-        console.log(`Draw! We both chose ${compPlay}!`);
-        return 'draw';
-    }
     else {
-        console.log('Please input only Rock, Paper or Scissors!');
-        return 'false';
+        results.textContent = `Draw! We both chose ${compPlay}!`;
     }
 }
-//console.log(playRound(userPlay(), compPlay()));
 
-function game() {
-
-    let userScore = 0;
-    let compScore = 0;
-    for (let i = 0; i < 5; i++) {
-        let whoWins = playRound(userPlay(), compPlay());
-        if (whoWins === 'userWin') {
-            userScore += 1;
-            console.log('user:' + userScore);
-        }
-        else if (whoWins === 'compWin') {
-            compScore += 1;
-            console.log('comp:' + compScore);
-        }
-        else if (whoWins === 'false') {
-            i -= 1;
-        }
-        console.log('i:' + i);
+function game(whoWins) {
+    if (whoWins === 'userWin') {
+        userScore++;
     }
-    if (userScore > compScore) {
-        console.log('You\'re the Champion!');
+    else if (whoWins === 'compWin') {
+        compScore++;
     }
-    else if (userScore < compScore) {
-        console.log('I\'m the Champion!');
+    userScoreDisp.textContent = `user: ${userScore}`;
+    compScoreDisp.textContent = `comp: ${compScore}`;
+    if (userScore === 5 || compScore === 5) {
+        if (userScore > compScore) {
+            winner.textContent = 'You\'re the Champion!';
+        }
+        else if (userScore < compScore) {
+            winner.textContent = 'I\'m the Champion!';
+        }
+        else winner.textContent = 'We\'re both Champs!';
+        userScore = 0;
+        compScore = 0;
     }
-    else console.log('We\'re both Champs!');
-
 }
-game();
 
+let userScore = 0;
+let compScore = 0;
+
+const rock = document.getElementById('Rock');
+const paper = document.querySelector('#Paper');
+const scissors = document.getElementById('Scissors');
+const btns = document.querySelectorAll('button');
+
+const results = document.getElementById('results');
+const compScoreDisp = document.getElementById('compScore');
+const userScoreDisp = document.getElementById('userScore');
+const winner = document.getElementById('winner');
+
+btns.forEach(btn => btn.addEventListener('click', function () {
+    if (winner.textContent) { winner.textContent = '' }
+    const userPlay = btn.id;
+    let whoWins = playRound(userPlay, compPlay());
+    game(whoWins);
+}))
